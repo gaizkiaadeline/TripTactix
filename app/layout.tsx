@@ -1,12 +1,13 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
+import type { Metadata } from 'next';
+import { Poppins } from 'next/font/google';  // Mengimpor font Poppins
+import './globals.css';
+import LottieBus from './animated/LottieBus';
 
-const inter = Inter({ subsets: ["latin"] });
+const poppins = Poppins({ subsets: ['latin'], weight: ['400', '700'] });  // Sesuaikan berat font jika diperlukan
 
 export const metadata: Metadata = {
-  title: "TripTactix",
-  description: "AI-powered travel planner",
+  title: 'TripTactix',
+  description: 'AI-powered travel planner',
 };
 
 export default function RootLayout({
@@ -16,7 +17,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={poppins.className}>
+        <LottieBus />
+        <div className="wrapper">
+          {children}
+        </div>
+      </body>
     </html>
   );
 }
+
+
+
+

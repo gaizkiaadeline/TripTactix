@@ -1,6 +1,8 @@
 'use client';
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { useState } from 'react';
+import JoinWaitlistModal from './JoinWaitlistModal';
+import { Toaster, toast } from 'react-hot-toast';
 
 export default function Chat() {
   const [messages, setMessages] = useState([
@@ -8,54 +10,47 @@ export default function Chat() {
   ]);
 
   const [message, setMessage] = useState('');
-  const [email, setEmail] = useState(''); 
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const sendMessage = async () => {
     if (!message.trim()) return;
 
     const userMessage = { role: 'user', content: message };
+    const updatedMessages = [...messages, userMessage, { role: 'assistant', content: '' }];
 
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      userMessage,
-      { role: 'assistant', content: '' },
-    ]);
-
+    setMessages(updatedMessages);
     setMessage('');
 
     try {
-        const response = await fetch('/api/chat', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ messages: [...messages, userMessage] }),  
-        });
+      const response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ messages: [...messages, userMessage] }),  
+      });
 
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
+      if (!response.ok) throw new Error('Network response was not ok');
 
-        const data = await response.json();
-        setMessages((prevMessages) => [
-            ...prevMessages.slice(0, -1),
-            { role: 'assistant', content: data.content || "Sorry, I couldn't understand your request." },
-        ]);
+      const data = await response.json();
+      setMessages((prevMessages) => [
+        ...prevMessages.slice(0, -1),
+        { role: 'assistant', content: data.content || "Sorry, I couldn't understand your request." },
+      ]);
     } catch (error) {
-        console.error('Error:', error);
-        setMessages((prevMessages) => [
-            ...prevMessages,
-            { role: 'assistant', content: "I'm sorry, but I encountered an error. Please try again later." },
-        ]);
+      console.error('Error:', error);
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { role: 'assistant', content: "I'm sorry, but I encountered an error. Please try again later." },
+      ]);
     }
   };
 
-  const handleJoinWaitlist = () => {
-    if (!email.trim()) return;
-
+  const handleJoinWaitlist = async (name: string, email: string): Promise<void> => {
+    console.log("Name submitted:", name);
     console.log("Email submitted:", email);
-
-    setEmail('');
+    toast.success("Thank you for joining our waitlist! 🚀");
+    setIsModalOpen(false);
   };
 
   return (
@@ -75,17 +70,8 @@ export default function Chat() {
       }}
     >
       {/* Logo TripTactix*/}
-      <Box
-        position="absolute"
-        top={16}
-        left={16}
-      >
-        <Box
-          component="img"
-          src="/images/logo.png"
-          alt="TripTactix Logo"
-          sx={{ width: 200, height: 200, marginTop: -5, marginLeft: -1 }}  
-        />
+      <Box position="absolute" top={16} left={16}>
+        <Box component="img" src="/images/logo.png" alt="TripTactix Logo" sx={{ width: 200, height: 200, marginTop: -5, marginLeft: -1 }} />
       </Box>
 
       {/* Title Text Centered Above Chat Box */}
@@ -99,7 +85,7 @@ export default function Chat() {
           fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' } 
         }}  
       >
-        Your AI-powered travel planner
+        Your AI-powered <span style={{ color: '#f8b878' }}>travel planner</span>
       </Typography>
 
       <Typography 
@@ -120,7 +106,7 @@ export default function Chat() {
         your unique preferences and budget.
       </Typography>
 
-      {/* Email Input for Waitlist */}
+      {/* Input for Waitlist */}
       <Box
         width="100%"
         maxWidth="500px"
@@ -130,26 +116,29 @@ export default function Chat() {
         mb={7}  
         sx={{ flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }}  
       >
-        <TextField
-          label="Enter your email"
-          variant="outlined"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          sx={{
-            width: '100%',
-            bgcolor: 'white',
-            borderRadius: '4px',
-          }}
-        />
-
-            <button 
-              className="px-1 py-1 w-full rounded-full mr-4 bg-gradient-to-br from-red-400 via-purple-500 to-pink-600 text-white mt-3 hover:bg-slate-600">
-              <span className="block bg-[#221C35] hover:bg-slate-800 rounded-full px-5 py-2">
-                Join Waitlist
-              </span>
-            </button>
-
+        <button 
+          className="px-1 py-1 w-full rounded-full mr-4 bg-gradient-to-br from-red-500 via-purple-500 to-orange-600 text-white mt-3 hover:bg-slate-600"
+          onClick={() => setIsModalOpen(true)}
+        >
+          <span className="block bg-[#221C35] hover:bg-slate-800 rounded-full px-5 py-2">
+            Join Waitlist
+          </span>
+        </button>
       </Box>
+
+      <Typography
+        variant="h6"
+        color="white"
+        sx={{
+          marginBottom: 4,
+          textAlign: 'center',
+          fontSize: '18px',
+          fontStyle: 'italic',
+          maxWidth: '80%',
+        }}
+      >
+        Curious About Personalized Travel Plans? Give Our AI Chatbot a Try!
+      </Typography>
 
       {/* Chat Box */}
       <Box
@@ -169,7 +158,7 @@ export default function Chat() {
           bgcolor="#0F1035"
           padding={2}
           sx={{ borderBottom: '1px solid #DDD' }}
-          height="80px"  
+          height="80px"
         >
           <Box
             component="img"
@@ -241,6 +230,14 @@ export default function Chat() {
         </Stack>
       </Box>
 
+      {/* Modal */}
+      <JoinWaitlistModal
+        open={isModalOpen}
+        handleClose={() => setIsModalOpen(false)}
+        handleJoin={handleJoinWaitlist}
+      />
+
+      <Toaster /> 
       <style jsx global>{`
         @keyframes gradient {
           0% { background-position: 0% 0%; }
@@ -251,5 +248,9 @@ export default function Chat() {
     </Box>
   );
 }
+
+
+
+
 
 
