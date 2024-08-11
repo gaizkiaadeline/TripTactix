@@ -71,7 +71,7 @@ export default function Chat() {
     >
       {/* Logo TripTactix*/}
       <Box position="absolute" top={16} left={16}>
-        <Box component="img" src="/images/logo.png" alt="TripTactix Logo" sx={{ width: 200, height: 200, marginTop: -5, marginLeft: -1 }} />
+        <Box component="img" src="/images/logo.png" alt="TripTactix Logo" sx={{ width: 170, height: 170, marginTop: -5, marginLeft: -1 }} />
       </Box>
 
       {/* Title Text Centered Above Chat Box */}
@@ -85,7 +85,7 @@ export default function Chat() {
           fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' } 
         }}  
       >
-        Your AI-powered <span style={{ color: '#f8b878' }}>travel planner</span>
+        Your AI-powered <span style={{ color: '#f8b878' }}>Travel Planner</span>
       </Typography>
 
       <Typography 
@@ -143,7 +143,8 @@ export default function Chat() {
       {/* Chat Box */}
       <Box
         width="100%"
-        maxWidth="600px"
+        maxWidth={{ xs: '90%', sm: '80%', md: '50%' }}
+        height={{ xs: '60vh', md: '60vh' }}  
         borderRadius="12px"
         boxShadow={3}
         overflow="hidden"
@@ -172,7 +173,7 @@ export default function Chat() {
           direction="column"
           spacing={2}
           flexGrow={1}
-          overflow="auto"
+          overflow="auto" 
           padding={2}
         >
           {messages.map((msg, index) => (
@@ -237,7 +238,7 @@ export default function Chat() {
         handleJoin={handleJoinWaitlist}
       />
 
-      <Toaster /> 
+      <Toaster />
       <style jsx global>{`
         @keyframes gradient {
           0% { background-position: 0% 0%; }
@@ -248,6 +249,7 @@ export default function Chat() {
     </Box>
   );
 }
+
 
 
 

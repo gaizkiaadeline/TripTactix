@@ -12,3 +12,26 @@ body {
     rgb(var(--background-start-rgb));
 }
 
+@media (max-width: 600px) {
+  .chatbox-container {
+    max-width: 100%;
+    height: 100vh;
+  }
+
+  .chatbox-content {
+    padding: 10px;
+  }
+
+  .chatbox-input {
+    padding: 5px;
+  }
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-y: auto;
+}
+
+
