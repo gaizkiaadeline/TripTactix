@@ -69,7 +69,6 @@ export default function Chat() {
         padding: 2,
         position: 'relative',
         overflowY: 'auto', // scroll or auto
-
       }}
     >
       {/* Logo TripTactix*/}
@@ -147,7 +146,7 @@ export default function Chat() {
       <Box
         width="100%"
         maxWidth={{ xs: '90%', sm: '80%', md: '50%' }}
-        height={{ xs: '60vh', md: '60vh' }}  
+        height={{ xs: '80vh', md: '80vh' }}  
         borderRadius="12px"
         boxShadow={3}
         overflow="hidden"
@@ -252,10 +251,4 @@ export default function Chat() {
     </Box>
   );
 }
-
-
-
-
-
-
 
