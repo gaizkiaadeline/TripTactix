@@ -56,7 +56,8 @@ export default function Chat() {
   return (
     <Box
       width="100vw"
-      height="100vh"
+      minHeight="100vh"
+      // height="auto" //
       display="flex"
       flexDirection="column"
       justifyContent="center"
@@ -66,7 +67,9 @@ export default function Chat() {
         backgroundSize: '400% 400%',
         animation: 'gradient 15s ease infinite',
         padding: 2,
-        position: 'relative'
+        position: 'relative',
+        overflowY: 'auto', // scroll or auto
+
       }}
     >
       {/* Logo TripTactix*/}
