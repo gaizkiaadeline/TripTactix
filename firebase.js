@@ -6,7 +6,6 @@ import { getFirestore } from 'firebase/firestore';
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyAYdEMQtFulPImqYdepulrDtbpvS2Mu7fQ",
   authDomain: "triptactix-d1b6b.firebaseapp.com",
@@ -19,10 +18,11 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-let analytics, firestore;
+const firestore = getFirestore(app);
+
+// Initialize Analytics only on the client-side
+let analytics;
 if (typeof window !== 'undefined') {
-  // Initialize Firebase Analytics only on the client side
   analytics = getAnalytics(app);
-  firestore = getFirestore(app);
 }
-export { firestore };
+export { firestore, analytics };
