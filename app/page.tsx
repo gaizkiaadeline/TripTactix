@@ -3,6 +3,8 @@ import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { useState } from 'react';
 import JoinWaitlistModal from './JoinWaitlistModal';
 import { Toaster, toast } from 'react-hot-toast';
+import { doc, setDoc } from "firebase/firestore";
+import { firestore } from '@/firebase';
 
 export default function Chat() {
   const [messages, setMessages] = useState([
@@ -46,12 +48,31 @@ export default function Chat() {
     }
   };
 
-  const handleJoinWaitlist = async (name: string, email: string): Promise<void> => {
-    console.log("Name submitted:", name);
-    console.log("Email submitted:", email);
-    toast.success("Thank you for joining our waitlist! 🚀");
-    setIsModalOpen(false);
+  // const handleJoinWaitlist = async (name: string, email: string): Promise<void> => {
+  //   console.log("Name submitted:", name);
+  //   console.log("Email submitted:", email);
+  //   toast.success("Thank you for joining our waitlist! 🚀");
+  //   setIsModalOpen(false);
+  // };
+
+
+  const handleJoinWaitlist = async (firstName: string, lastName: string, email: string): Promise<void> => {
+    try {
+      const userDocRef = doc(firestore, "waitlist", email);
+      await setDoc(userDocRef, {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        timestamp: new Date().toISOString(),
+      });
+      toast.success("Thank you for joining our waitlist! 🚀");
+      setIsModalOpen(false);
+    } catch (err) {
+      console.error("Error saving to Firestore:", err);
+      toast.error("Oops! Something went wrong!");
+    }
   };
+
 
   return (
     <Box
