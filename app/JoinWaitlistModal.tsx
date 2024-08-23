@@ -3,11 +3,13 @@ import { useState } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import WarningIcon from '@mui/icons-material/Warning'; 
 import { toast } from 'react-hot-toast';
+import { doc, setDoc } from "firebase/firestore";
+import { firestore } from '@/firebase';
 
 interface JoinWaitlistModalProps {
   open: boolean;
   handleClose: () => void;
-  handleJoin: (firstName: string, lastName: string, email: string) => Promise<void>; 
+  handleJoin: (firstName: string, lastName: string, email: string) => Promise<void>;
 }
 
 const JoinWaitlistModal: React.FC<JoinWaitlistModalProps> = ({ open, handleClose, handleJoin }) => {
@@ -207,14 +209,3 @@ const JoinWaitlistModal: React.FC<JoinWaitlistModalProps> = ({ open, handleClose
 };
 
 export default JoinWaitlistModal;
-
-
-
-
-
-
-
-
-
-
-

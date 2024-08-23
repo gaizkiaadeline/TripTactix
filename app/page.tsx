@@ -3,6 +3,8 @@ import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { useState } from 'react';
 import JoinWaitlistModal from './JoinWaitlistModal';
 import { Toaster, toast } from 'react-hot-toast';
+import { doc, setDoc } from "firebase/firestore";
+import { firestore } from '@/firebase';
 
 export default function Chat() {
   const [messages, setMessages] = useState([
@@ -46,17 +48,37 @@ export default function Chat() {
     }
   };
 
-  const handleJoinWaitlist = async (name: string, email: string): Promise<void> => {
-    console.log("Name submitted:", name);
-    console.log("Email submitted:", email);
-    toast.success("Thank you for joining our waitlist! 🚀");
-    setIsModalOpen(false);
+  // const handleJoinWaitlist = async (name: string, email: string): Promise<void> => {
+  //   console.log("Name submitted:", name);
+  //   console.log("Email submitted:", email);
+  //   toast.success("Thank you for joining our waitlist! 🚀");
+  //   setIsModalOpen(false);
+  // };
+
+
+  const handleJoinWaitlist = async (firstName: string, lastName: string, email: string): Promise<void> => {
+    try {
+      const userDocRef = doc(firestore, "waitlist", email);
+      await setDoc(userDocRef, {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        timestamp: new Date().toISOString(),
+      });
+      toast.success("Thank you for joining our waitlist! 🚀");
+      setIsModalOpen(false);
+    } catch (err) {
+      console.error("Error saving to Firestore:", err);
+      toast.error("Oops! Something went wrong!");
+    }
   };
+
 
   return (
     <Box
       width="100vw"
-      height="100vh"
+      minHeight="100vh"
+      // height="auto" //
       display="flex"
       flexDirection="column"
       justifyContent="center"
@@ -66,7 +88,8 @@ export default function Chat() {
         backgroundSize: '400% 400%',
         animation: 'gradient 15s ease infinite',
         padding: 2,
-        position: 'relative'
+        position: 'relative',
+        overflowY: 'auto', // scroll or auto
       }}
     >
       {/* Logo TripTactix*/}
@@ -144,7 +167,7 @@ export default function Chat() {
       <Box
         width="100%"
         maxWidth={{ xs: '90%', sm: '80%', md: '50%' }}
-        height={{ xs: '60vh', md: '60vh' }}  
+        height={{ xs: '80vh', md: '80vh' }}  
         borderRadius="12px"
         boxShadow={3}
         overflow="hidden"
@@ -249,10 +272,4 @@ export default function Chat() {
     </Box>
   );
 }
-
-
-
-
-
-
 
