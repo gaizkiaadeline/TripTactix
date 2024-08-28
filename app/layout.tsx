@@ -22,7 +22,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
 
-        <link rel="icon" type="image/png" sizes="264x264" href="/images/logo-withouttext.png" />
+        <link rel="icon" type="image/png" sizes="64x64" href="/images/logo-withouttext.png" />
       </head>
       <body className={poppins.className}>
         <LottieBus />
