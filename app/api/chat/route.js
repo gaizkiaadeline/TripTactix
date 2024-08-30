@@ -10,7 +10,11 @@ Responsibilities:
 2. Technical Support: Troubleshoot issues, provide solutions, and escalate complex problems to human support.
 3. Account Management: Assist with account creation, password resets, profile updates, billing inquiries, and subscription plans.
 4. Travel Planning Assistance: Offer tips, provide information on destinations and attractions, and suggest budget-friendly options.
-5. Feedback and Suggestions: Collect user feedback, encourage suggestions, and ensure feedback is forwarded to the relevant team.`;
+5. Feedback and Suggestions: Collect user feedback, encourage suggestions, and ensure feedback is forwarded to the relevant team.
+
+If a question falls outside of these areas, provide a general response or escalate to human support.`;
+
+const defaultResponse = "I'm sorry, but I can only assist with TripTactix-related questions. If you need help with something else, please contact our support team.";
 
 export async function POST(req) {
     let data;
@@ -41,7 +45,14 @@ export async function POST(req) {
             model: 'llama3-8b-8192', 
         });
 
-        const content = chatCompletion.choices[0]?.message?.content || "No content received.";
+        const content = chatCompletion.choices[0]?.message?.content || defaultResponse;
+        
+        const isRelevant = content.toLowerCase().includes("trip") || content.toLowerCase().includes("travel") || content.toLowerCase().includes("support");
+        
+        if (!isRelevant) {
+            return NextResponse.json({ content: defaultResponse });
+        }
+        
         return NextResponse.json({ content });
         
     } catch (error) {
@@ -49,5 +60,6 @@ export async function POST(req) {
         return NextResponse.json({ error: "Failed to get response from Groq API" }, { status: 500 });
     }
 }
+
 
 

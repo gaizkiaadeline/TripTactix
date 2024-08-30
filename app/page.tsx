@@ -5,6 +5,9 @@ import JoinWaitlistModal from './JoinWaitlistModal';
 import { Toaster, toast } from 'react-hot-toast';
 import { doc, setDoc } from "firebase/firestore";
 import { firestore } from '@/firebase';
+import FeaturesSlider from "./FeaturesSlider";
+import FAQSection from "./FAQSection";
+import Footer from "./Footer";
 
 export default function Chat() {
   const [messages, setMessages] = useState([
@@ -25,11 +28,11 @@ export default function Chat() {
 
     try {
       const response = await fetch('/api/chat', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ messages: [...messages, userMessage] }),  
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ messages: [...messages, userMessage] }),
       });
 
       if (!response.ok) throw new Error('Network response was not ok');
@@ -48,14 +51,6 @@ export default function Chat() {
     }
   };
 
-  // const handleJoinWaitlist = async (name: string, email: string): Promise<void> => {
-  //   console.log("Name submitted:", name);
-  //   console.log("Email submitted:", email);
-  //   toast.success("Thank you for joining our waitlist! 🚀");
-  //   setIsModalOpen(false);
-  // };
-
-
   const handleJoinWaitlist = async (firstName: string, lastName: string, email: string): Promise<void> => {
     try {
       const userDocRef = doc(firestore, "waitlist", email);
@@ -73,15 +68,12 @@ export default function Chat() {
     }
   };
 
-
   return (
     <Box
       width="100vw"
       minHeight="100vh"
-      // height="auto" //
       display="flex"
       flexDirection="column"
-      justifyContent="center"
       alignItems="center"
       sx={{
         background: 'linear-gradient(-45deg, #00BFAE, #007BFF, #00BFAE, #007BFF)',
@@ -89,10 +81,10 @@ export default function Chat() {
         animation: 'gradient 15s ease infinite',
         padding: 2,
         position: 'relative',
-        overflowY: 'auto', // scroll or auto
+        overflowY: 'auto',
       }}
     >
-      {/* Logo TripTactix*/}
+      {/* Logo TripTactix */}
       <Box position="absolute" top={16} left={16}>
         <Box component="img" src="/images/logo.png" alt="TripTactix Logo" sx={{ width: 170, height: 170, marginTop: -5, marginLeft: -1 }} />
       </Box>
@@ -129,8 +121,8 @@ export default function Chat() {
         your unique preferences and budget.
       </Typography>
 
-      {/* Input for Waitlist */}
-      <Box
+     {/* Input for Waitlist */}
+     <Box
         width="100%"
         maxWidth="500px"
         display="flex"
@@ -147,10 +139,38 @@ export default function Chat() {
             Join Waitlist
           </span>
         </button>
+
+      </Box>
+
+      {/* Section for Features */}
+      <Box
+        width="100%"
+        maxWidth="900px"
+        margin="auto"
+        padding={2}
+        sx={{ 
+          textAlign: 'center', 
+          marginTop: 4, 
+          background: 'rgba(255, 255, 255, 0.2)', 
+          borderRadius: '16px', 
+          padding: '30px 20px' 
+        }}
+      >
+        <Typography variant="h4" color="white" sx={{ textAlign: 'center', fontWeight: 'bold', marginBottom: '35px' }}>
+          Discover What We Offers  <span 
+        style={{ color: '#FFFFFF'}} 
+        aria-label="emoji" 
+        role="img"
+      >
+        .ೃ࿔ ✈︎ *:･
+      </span>
+        </Typography>
+        
+        <FeaturesSlider />
       </Box>
 
       <Typography
-        variant="h6"
+        variant="h5"
         color="white"
         sx={{
           marginBottom: 4,
@@ -158,6 +178,7 @@ export default function Chat() {
           fontSize: '18px',
           fontStyle: 'italic',
           maxWidth: '80%',
+          marginTop: '65px',
         }}
       >
         Curious About Personalized Travel Plans? Give Our AI Chatbot a Try!
@@ -232,36 +253,69 @@ export default function Chat() {
           direction='row'
           spacing={2}
           p={2}
-          alignItems='center'
-          bgcolor='#F5F5F5'
-          borderTop="1px solid #DDD"
+          sx={{ borderTop: '1px solid #DDD', bgcolor: 'rgba(0,0,0,0.1)' }}
         >
           <TextField
-            label='Start typing your message'
-            fullWidth
             variant="outlined"
+            placeholder="Start typing your message..."
+            fullWidth
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            sx={{ flexGrow: 1 }}
+            onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderRadius: '16px',
+                  border: '2px solid #7FC7D9',
+                },
+              },
+            }}
           />
           <Button
             variant="contained"
-            sx={{ backgroundColor: '#0F1035', color: '#FFFFFF' }} 
             onClick={sendMessage}
+            sx={{
+              backgroundColor: '#365486',
+              color: '#fff',
+              borderRadius: '16px',
+              '&:hover': {
+                backgroundColor: '#283E65',
+              },
+            }}
           >
             Send
           </Button>
         </Stack>
       </Box>
 
-      {/* Modal */}
+      <Box
+        width="100%"
+        maxWidth="900px"
+        margin="auto"
+        padding={2}
+        sx={{
+          textAlign: 'center',
+          marginTop: 14,
+          background: 'rgba(255, 255, 255, 0.2)',
+          borderRadius: '16px',
+          padding: '30px 20px',
+        }}
+      >
+        <Typography variant="h4" color="white" sx={{ textAlign: 'center', fontWeight: 'bold', marginBottom: 2 }}>
+          Frequently Asked Questions
+        </Typography>
+        <FAQSection />
+      </Box>
+
+      <Footer />
+
       <JoinWaitlistModal
         open={isModalOpen}
         handleClose={() => setIsModalOpen(false)}
         handleJoin={handleJoinWaitlist}
       />
 
-      <Toaster />
+      <Toaster position="bottom-center" />
       <style jsx global>{`
         @keyframes gradient {
           0% { background-position: 0% 0%; }
@@ -272,4 +326,5 @@ export default function Chat() {
     </Box>
   );
 }
+
 
