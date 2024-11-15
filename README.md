@@ -1,3 +1,16 @@
+# TripTacTix
+This project features the landing page for TripTactix, a travel planning platform designed to simplify trip planning and booking. The landing page includes several key sections to engage users:
+
+- Join Waitlist – Users can input their email to join the waitlist and receive updates about upcoming features and platform releases.
+- Discover What We Offer – This section highlights TripTactix's core services, such as flight, hotel, and vacation rental bookings, personalized itineraries, and travel recommendations.
+- AI Chatbot – An interactive AI-powered chatbot is available to provide instant support, answering common questions and guiding users through the platform.
+- FAQ – A comprehensive FAQ section answers common queries, helping users understand how to use the platform and what to expect.
+
+
+The landing page is designed with a clean, user-friendly interface, encouraging users to join the waitlist and learn more about how TripTactix can assist in planning their next adventure.
+
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
