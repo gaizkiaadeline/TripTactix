@@ -9,6 +9,7 @@ This project features the landing page for TripTactix, a travel planning platfor
 
 The landing page is designed with a clean, user-friendly interface, encouraging users to join the waitlist and learn more about how TripTactix can assist in planning their next adventure.
 
+![Screenshot 2024-11-22 002005](https://github.com/user-attachments/assets/10f95e72-2bf4-48bd-8e9b-cc5521394612)
 
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
